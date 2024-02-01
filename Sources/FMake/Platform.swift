@@ -251,6 +251,7 @@ public func repackFrameworkToMacOS(at path: String, name: String) throws {
 
 public func appleCMake() -> String {
     """
+    include(CMakeSystemSpecificInformation)
     include(Platform/Darwin)
 
     list(APPEND CMAKE_FIND_ROOT_PATH $ENV{SECOND_FIND_ROOT_PATH})
