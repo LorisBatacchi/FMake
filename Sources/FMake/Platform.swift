@@ -29,6 +29,7 @@ public enum Platform: String, CaseIterable {
   case AppleTVOS, AppleTVSimulator
   case iPhoneOS, iPhoneSimulator
   case MacOSX, Catalyst
+  case xrOS
   case WatchOS, WatchSimulator
   
   public var name: String {
@@ -41,6 +42,7 @@ public enum Platform: String, CaseIterable {
   
   public var archs: [Arch] {
     switch self {
+    case .xrOS:             return [.arm64]
     case .AppleTVOS:        return [.arm64]
     case .AppleTVSimulator: return [.x86_64 /*, .arm64 */]
     case .iPhoneOS:         return [.arm64, .arm64e]
@@ -54,6 +56,7 @@ public enum Platform: String, CaseIterable {
   
   var cmakeSystemName: String {
     switch self {
+    case .xrOS: return "visionOS"
     case .AppleTVOS, .AppleTVSimulator: return "tvOS"
     case .MacOSX, .Catalyst:            return "Darwin"
     case .iPhoneOS, .iPhoneSimulator:   return "iOS"
@@ -83,6 +86,7 @@ public enum Platform: String, CaseIterable {
   
   public var plistMinSDKVersionName: String {
     switch self {
+    case .xrOS:             return "xros_version_min"
     case .AppleTVOS:        return "tvos_version_min"
     case .AppleTVSimulator: return "tvos_simulator_version_min"
     case .MacOSX:           return "macosx_version_min"
@@ -154,10 +158,12 @@ public enum Platform: String, CaseIterable {
     case watch = 4
     case tv4k = 5
     case mac = 6
+    case vision = 7
   }
   
   var deviceFamily: [DeviceType] {
     switch self {
+    case .xrOS: return [.vision]
     case .AppleTVOS, .AppleTVSimulator:
       return [.tv, .tv4k]
     case .MacOSX, .Catalyst:
